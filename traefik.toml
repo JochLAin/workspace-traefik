@@ -1,0 +1,27 @@
+[global]
+  sendAnonymousUsage = false
+
+[api]
+  dashboard = true
+  insecure  = true
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.websecure]
+    address = ":443"
+
+[log]
+  level = "ERROR"
+
+[providers]
+  [providers.docker]
+    endpoint = "unix:///var/run/docker.sock"
+    exposedByDefault = false
+    network  = "proxy"
+    watch    = true
+  [providers.file]
+    filename = "/etc/traefik/dynamic.toml"
+
+[serversTransport]
+  insecureSkipVerify = true

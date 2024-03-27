@@ -1,0 +1,9 @@
+[tls.stores]
+  [tls.stores.default]
+    [tls.stores.default.defaultCertificate]
+      certFile = "/config/certs/ssl.crt"
+      keyFile  = "/config/certs/ssl.key"
+
+[[tls.certificates]]
+  certFile = "/config/certs/ssl.crt"
+  keyFile  = "/config/certs/ssl.key"

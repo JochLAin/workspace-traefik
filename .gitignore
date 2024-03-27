@@ -1,0 +1,30 @@
+# No sé
+/buildx
+/desktop
+/scan
+.buildNodeID
+.token_seed
+.token_seed.lock
+canary.json
+config.json
+contexts
+features.json
+
+# Node
+npm-debug.log
+/global_node_modules
+/node_modules
+/package-lock.json
+
+# Composer
+/composer.lock
+/vendor
+
+# TMP
+/.idea
+/tmp
+
+# certificates
+/certs/ssl.crt
+/certs/ssl.csr
+/certs/ssl.key

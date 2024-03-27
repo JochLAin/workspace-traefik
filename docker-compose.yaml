@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+    reverse-proxy:
+        image: traefik:v2.4
+        container_name: reverse-proxy
+#        command:
+#            # Global HTTP -> HTTPS
+#            - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+#            - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+        networks: ["proxy"]
+        ports: ["127.0.0.1:80:80", "127.0.0.1:443:443", "127.0.0.1:3000:8080"]
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+            - "$PWD/traefik.toml:/etc/traefik/traefik.toml"
+            - "$PWD/dynamic.toml:/etc/traefik/dynamic.toml"
+            - "$PWD/certs:/config/certs"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=proxy"
+            - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+            - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
+
+            - "traefik.http.routers.reverse-proxy-insecure.entrypoints=web"
+            - "traefik.http.routers.reverse-proxy-insecure.middlewares=https-redirect@docker"
+            - "traefik.http.routers.reverse-proxy-insecure.rule=Host(`traefik.localhost`)"
+            - "traefik.http.routers.reverse-proxy.entrypoints=websecure"
+            - "traefik.http.routers.reverse-proxy.rule=Host(`traefik.localhost`)"
+            - "traefik.http.routers.reverse-proxy.service=api@internal"
+            - "traefik.http.routers.reverse-proxy.tls=true"
+
+        restart: "unless-stopped"
+
+networks:
+    proxy: { external: true }
